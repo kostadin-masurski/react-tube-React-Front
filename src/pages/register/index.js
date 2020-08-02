@@ -14,14 +14,49 @@ class RegisterPage extends Component {
             email: "",
             password: "",
             confirmPassword: "",
-            msg: false
+            msg: false,
+            usernameMsg: false,
+            emailMsg: false,
+            passwordMsg: false,
+            confirmPasswordMsg: false,
+            disableSubmit: true
         }
     }
 
-    onBlur = (ev, type) => {
+    onBlur = async (ev, type) => {
+        this.setState({ msg: false });
         const newState = {};
         newState[type] = ev.target.value;
-        this.setState(newState);
+        await this.setState(newState);
+        this.validateInput();
+    }
+
+    validateInput() {
+        this.setState({ disableSubmit: true, usernameMsg: false, emailMsg: false, passwordMsg: false, confirmPasswordMsg: false});
+
+        if (/[!#$%^&*()+=\[\]{};':"\\|,<>\/?]/.test(this.state.username)) {
+            this.setState({ usernameMsg: 'Username should contain only alphanumeric symbols, @ or _'});
+        }
+
+        if (this.state.username.length < 3) {
+            this.setState({ usernameMsg: 'Username should be more than 3 symbols long'});
+        }
+
+        if (!/^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i.test(this.state.email)) {
+            this.setState({ emailMsg: 'Email is not valid'});
+        }
+
+        if (this.state.password.length < 6) {
+            this.setState({ passwordMsg: 'Password should be more than 5 symbols long'});
+        }
+
+        if (this.state.password !== this.state.confirmPassword) {
+            this.setState({ confirmPasswordMsg: 'Passwords not matching'});
+        }
+
+        if (this.state.usernameMsg === false && this.state.emailMsg === false && this.state.passwordMsg === false && this.state.confirmPasswordMsg === false) {
+            this.setState({ disableSubmit: false});
+        }
     }
 
     handleSubmit = async (ev) => {
@@ -33,7 +68,6 @@ class RegisterPage extends Component {
             return;
         }
 
-        this.setState({ msg: false });
         const user = response;
         console.log(user)
         //this.props.history.push('/'); nort tested
@@ -49,29 +83,29 @@ class RegisterPage extends Component {
                     <Form.Group controlId="formBasicUsername">
                         <Form.Label>Usename</Form.Label>
                         <Form.Control onBlur={(e) => this.onBlur(e, 'username')} type="text" placeholder="Enter Username" />
-                        <Form.Text className="text-danger">Username msg</Form.Text>
+                        {this.state.usernameMsg ? <Form.Text className="text-danger">{this.state.usernameMsg}</Form.Text> : null}
                     </Form.Group>
 
                     <Form.Group controlId="formBasicEmail">
                         <Form.Label>Email address</Form.Label>
                         <Form.Control onBlur={(e) => this.onBlur(e, 'email')} type="email" placeholder="Enter email" />
-                        <Form.Text className="text-danger">Email msg</Form.Text>
+                        {this.state.emailMsg ? <Form.Text className="text-danger">{this.state.emailMsg}</Form.Text> : null}
                     </Form.Group>
 
                     <Form.Group controlId="formBasicPassword">
                         <Form.Label>Password</Form.Label>
                         <Form.Control onBlur={(e) => this.onBlur(e, 'password')} type="password" placeholder="Password" />
-                        <Form.Text className="text-danger">Password msg</Form.Text>
+                        {this.state.passwordMsg ? <Form.Text className="text-danger">{this.state.passwordMsg}</Form.Text> : null}
                     </Form.Group>
 
                     <Form.Group controlId="formBasicConfirmPassword">
                         <Form.Label>Confirm Password</Form.Label>
                         <Form.Control onBlur={(e) => this.onBlur(e, 'confirmPassword')} type="password" placeholder="Confirm Password" />
-                        <Form.Text className="text-danger">Confirm Password msg</Form.Text>
+                        {this.state.confirmPasswordMsg ? <Form.Text className="text-danger">{this.state.confirmPasswordMsg}</Form.Text> : null}
                     </Form.Group>
 
                     {this.state.msg ? <p className={styles.msg}>{this.state.msg}</p> : null}
-                    <Button variant="success" type="submit">Register</Button>
+                    <Button variant="success" type="submit" disabled={this.state.disableSubmit}>Register</Button>
                 </Form>
             </PageLayout>
         );
