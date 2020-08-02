@@ -1,0 +1,17 @@
+.item-img {
+  max-height: 10vh;
+  max-width: 95%;
+  display: block;
+  border-radius: 6px;
+}
+
+.item {
+  border: 1px solid gray;
+  margin: 2px;
+}
+
+.item:hover {
+  transform: scale(1.2);
+  cursor: pointer;
+  background-color: lightgrey;
+}

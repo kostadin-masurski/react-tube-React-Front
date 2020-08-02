@@ -1,0 +1,18 @@
+.banner {
+    background-image: url(../../../images/151642953.jpg);
+    background-size: cover;
+    height: 89vh;
+}
+
+.half-banner {
+    height: 19vh;
+}
+
+.banner-h1 {
+    color: crimson;
+    padding: 1%;
+}
+
+.link {
+    color: darkred;
+}

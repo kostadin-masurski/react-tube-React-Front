@@ -1,0 +1,6 @@
+.scroll {
+  height: 89vh;
+  width: 15vw;
+  overflow: hidden;
+  overflow-y: scroll;
+}
