@@ -5,6 +5,7 @@ import { userService } from '../../servives/userService'
 import styles from './index.module.css';
 import PageLayout from '../../components/core/page-layout';
 import Title from '../../components/core/title';
+import UserContext from '../../Context';
 
 class RegisterPage extends Component {
     constructor(props) {
@@ -23,6 +24,8 @@ class RegisterPage extends Component {
         }
     }
 
+    static contextType = UserContext;
+
     onBlur = async (ev, type) => {
         this.setState({ msg: false });
         const newState = {};
@@ -34,7 +37,7 @@ class RegisterPage extends Component {
     validateInput() {
         this.setState({ disableSubmit: true, usernameMsg: false, emailMsg: false, passwordMsg: false, confirmPasswordMsg: false});
 
-        if (/[!#$%^&*()+=\[\]{};':"\\|,<>\/?]/.test(this.state.username)) {
+        if (/[!#$%^&*()+=[\]{};':"\\|,<>/?]/.test(this.state.username)) {
             this.setState({ usernameMsg: 'Username should contain only alphanumeric symbols, @ or _'});
         }
 
@@ -69,13 +72,14 @@ class RegisterPage extends Component {
         }
 
         const user = response;
-        console.log(user)
-        //this.props.history.push('/'); nort tested
+        this.context.logIn(user);
+        //this.context.user = user;
+        console.log('the context is :');
+        console.log(this.context);
+        this.props.history.push('/');
     }
 
     render() {
-        //const { username, email, password, confirmPassword } = this.state;
-
         return (
             <PageLayout>
                 <Form className={styles["form-container"]} onSubmit={this.handleSubmit}>

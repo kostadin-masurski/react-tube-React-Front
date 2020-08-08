@@ -1,11 +1,14 @@
 export const userService = {
+    getCookie(name) {
+        const cookieValue = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+        return cookieValue ? cookieValue[2] : null;
+    },
+
     async handleResponse(promise) {
-        let authToken = '';
-        //authToken = promise.headers.get('Authorization')
         const resJson = await promise.json();
         if (!resJson.message) {
-            authToken = resJson.username;
-            //document.cookie = `x-auth-token=${authToken}`;
+            const authToken = resJson.jwt;
+            document.cookie = `x-auth-token=${authToken}`;
         }
         return resJson;
     },
@@ -17,6 +20,7 @@ export const userService = {
 
         return await fetch('http://localhost:8080/api/login', {
             method: 'POST',
+            headers: {jwt: this.getCookie('x-auth-token')},
             body: loginFormData
         }).then(promise => {
             return this.handleResponse(promise);

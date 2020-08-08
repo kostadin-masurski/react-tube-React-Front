@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Navbar, Nav, Form, FormControl, Button } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 import { userService } from '../../../servives/userService'
 import logo from '../../../images/tuba3d-small.png';
 import styles from './index.module.css';
+import UserContext from '../../../Context';
 
 const Navigation = () => {
+    const context = useContext(UserContext)
+    const history = useHistory()
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [msg, setMsg] = useState(false);
@@ -26,7 +29,17 @@ const Navigation = () => {
 
         setMsg(false);
         const user = response;
-        //history.push('/');not working
+        context.logIn(user);
+        console.log('the context logged is')
+        console.log(context.user)
+        history.push('/');
+    }
+
+    const handleLogOut = (ev) => {
+        ev.preventDefault();
+        context.logOut();
+        console.log('in handel logout after app log out')
+        console.log(context.user)
     }
 
     return (
@@ -39,15 +52,20 @@ const Navigation = () => {
                 <Nav className="mr-auto">
                     <Nav.Link href="/register"><h5 className={styles.navtext}>Register</h5></Nav.Link>
                 </Nav>
-                <Form inline onSubmit={handleSubmit}>
-                    <Nav.Link href="/home"><h5 className={styles.navtext}>Welocom user</h5></Nav.Link>
-                    <Link to="/playlist/create"><h5 className={styles.navtext}>Create New Playlist</h5></Link>
+                {context.user ?
+                    <Form className={styles['nav-form']} onSubmit={handleLogOut} >
+                        <Link to="/register"><h5 className={styles.navtext}>Welocome {context.user.username}</h5></Link>
+                        <Nav.Link to="/playlist/create"><h5 className={styles.navtext}>Create New Playlist</h5></Nav.Link>
+                        <Button variant="outline-light" type="submit" >Logout</Button>
+                    </Form>
+                :
+                <Form className={styles['nav-form']} onSubmit={handleSubmit}>
                     <FormControl value={username} onChange={ev => setUsername(ev.target.value)} type="text" id="username" placeholder="Username" className="mr-sm-2" />
                     <FormControl value={password} onChange={ev => setPassword(ev.target.value)} type="password" id="password" placeholder="Password" className="mr-sm-2" />
                     <Button variant="outline-light" type="submit">Login</Button>
-                    <Button variant="outline-light">Logout</Button>
                     {msg ? <p className={styles.msg}>{msg}</p> : null}
                 </Form>
+                }
             </Navbar.Collapse>
         </Navbar>
     )

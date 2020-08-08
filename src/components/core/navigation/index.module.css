@@ -1,5 +1,10 @@
 a {
     margin-right: 5px;
+    min-width: fit-content;
+}
+
+.nav-form {
+    display: flex;
 }
 
 .msg {

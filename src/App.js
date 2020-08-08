@@ -1,11 +1,35 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import UserContext from './Context';
 import './App.css';
 import Router from './router';
 
-function App() {
+function App(props) {
+  const [user, setUser] = useState(null);
+
+  const logIn = (user) => {
+    setUser({
+      ...user,
+      //loggedIn: true
+    })
+    console.log('after app log in')
+  }
+
+  const logOut = () => {
+    document.cookie = "x-auth-token= ; expires = Thu, 01 Jan 1970 00:00:00 GMT"
+    console.log('before app log out')
+    console.log(user)
+    setUser({
+      user: null
+      //loggedIn: false
+    })
+  }
+
   return (
     <div className="App">
-      <Router />
+      <UserContext.Provider value={{ user, logIn, logOut }}>
+        {props.children}
+        <Router />
+      </UserContext.Provider>
     </div>
   );
 }
