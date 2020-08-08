@@ -8,20 +8,13 @@ function App(props) {
 
   const logIn = (user) => {
     setUser({
-      ...user,
-      //loggedIn: true
+      ...user
     })
-    console.log('after app log in')
   }
 
   const logOut = () => {
-    document.cookie = "x-auth-token= ; expires = Thu, 01 Jan 1970 00:00:00 GMT"
-    console.log('before app log out')
-    console.log(user)
-    setUser({
-      user: null
-      //loggedIn: false
-    })
+    document.cookie = "x-auth-token= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
+    setUser(null);
   }
 
   return (
