@@ -1,13 +1,11 @@
 import React from 'react';
 import styles from './index.module.css';
 
-const Item = ({ item }) => {
+const Item = ({ item, index }) => {
     return (
-        <div className={styles.item}>
+        <div className={styles.item} id={index}>
             <h4>{item.name}</h4>
-            <div>
-                <img className={styles['item-img']} src={item.imgUrl} alt="" />
-            </div>
+            <img className={styles['item-img']} src={item.imgUrl} alt="" />
         </div>
     )
 }

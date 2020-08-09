@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import UserContext from './Context';
+import React, { useState, useEffect, useCallback } from 'react';
+import Context from './Context';
 import './App.css';
 import Router from './router';
 import { userService } from './servives/userService';
 
 function App(props) {
-  const [user, setUser] = useState(null);  
+  const [user, setUser] = useState(null);
+  const [selectedSong, setSelectedSong] = useState(null);
+  const [allSongs, setAllSongs] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const logIn = (user) => {
@@ -19,7 +21,19 @@ function App(props) {
     setUser(null);
   }
 
-  const authenticate = async () => {
+  const selectSong = (song) => {
+    setSelectedSong({
+      ...song
+    })
+  }
+
+  const loadAllSongs = (allSongs) => {
+    setAllSongs({
+      ...allSongs
+    })
+  }
+
+  const authenticate = useCallback(async () => {
     const response = await userService.login();
     if (response.message) {
       logOut();
@@ -29,7 +43,7 @@ function App(props) {
     
     logIn(response);
     setLoading(false);
-  }
+  }, [])
   
   useEffect(() => {
     const token = userService.getCookie('x-auth-token');
@@ -40,7 +54,7 @@ function App(props) {
     }
 
     authenticate();
-  }, []);
+  }, [authenticate])
 
   if (loading) {
     return (
@@ -50,10 +64,18 @@ function App(props) {
 
   return (
     <div className="App">
-      <UserContext.Provider value={{ user, logIn, logOut }}>
+      <Context.Provider value={{ 
+        user,
+        logIn,
+        logOut,
+        selectedSong,
+        allSongs,
+        selectSong,
+        loadAllSongs
+        }}>
         {props.children}
         <Router />
-      </UserContext.Provider>
+      </Context.Provider>
     </div>
   );
 }

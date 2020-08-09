@@ -1,47 +1,41 @@
-import React, { Component } from 'react';
+import React, { useContext, useEffect, useCallback, useMemo } from 'react';
 import { Button } from 'react-bootstrap'
 import { songService } from '../../../servives/songService'
 import styles from './index.module.css';
 import Item from '../item';
+import Context from '../../../Context';
 
-class Songs extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            songs: [],
-            selectPlaylistInces: 0
-        }
-    }
+const Songs = () => {
+    const context = useContext(Context);
 
-    async loadAllSongs() {
+    const loadAllSongs = useCallback( async () => {
         const songs = await (await songService.loadAll()).json();
-        this.setState({
-            songs
-        })
-    }
+        context.loadAllSongs(songs);
+    }, [context])
 
-    renderSongs() {
-        const { songs } = this.state;
-        return songs.map((song, index) => {
+    const renderSongs = useMemo(() => {
+        return Object.values(context.allSongs).map((song, index) => {
             return (
-                <Item item={song} key={index} />
+                <Item item={song} index={index} key={index} />
             )
         })
+    }, [context.allSongs])
+
+    useEffect(() => {
+        loadAllSongs();
+    }, [loadAllSongs])
+
+    const showAllSongs = () => {
+        console.log(context.selectedSong)
     }
 
-    componentDidMount() {
-        this.loadAllSongs();
-    }
-
-    render() {
-        return (
-            <div className={styles.scroll}>
-                <h1>Songs</h1>
-                <Button variant="dark">All songs</Button>
-                {this.renderSongs()}
-            </div>
-        )
-    }
+    return (
+        <div className={styles.scroll} onClick={ev => context.selectSong(context.allSongs[ev.target.parentNode.id])}>
+            <h1>Songs</h1>
+            <Button onClick={ev => showAllSongs()} variant="dark">All songs</Button>
+            {renderSongs}
+        </div>
+    )
 }
 
 export default Songs;

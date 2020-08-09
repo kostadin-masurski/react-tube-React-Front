@@ -1,9 +1,13 @@
 import React from 'react';
 
-const UserContext = React.createContext({
+const Context = React.createContext({
   user: null,
   logIn: () => {},
-  logOut: () => {}
+  logOut: () => {},
+  selectedSong: null,
+  allSongs: [],
+  selectSong: () => {},
+  loadAllSongs: () => {}
 })
 
-export default UserContext
+export default Context

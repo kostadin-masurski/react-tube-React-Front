@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
-import UserContext from './Context';
+import Context from './Context';
 import Banner from './components/items/banner';
 import NotFound from './pages/not-found'
 import RegisterPage from './pages/register';
@@ -9,7 +9,7 @@ import EditPage from './pages/edit';
 
 
 const Router = () => {
-    const context = useContext(UserContext);
+    const context = useContext(Context);
 
     return (
         <BrowserRouter>

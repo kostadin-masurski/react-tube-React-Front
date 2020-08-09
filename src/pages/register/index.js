@@ -5,7 +5,7 @@ import { userService } from '../../servives/userService'
 import styles from './index.module.css';
 import PageLayout from '../../components/core/page-layout';
 import Title from '../../components/core/title';
-import UserContext from '../../Context';
+import Context from '../../Context';
 
 class RegisterPage extends Component {
     constructor(props) {
@@ -24,7 +24,7 @@ class RegisterPage extends Component {
         }
     }
 
-    static contextType = UserContext;
+    static contextType = Context;
 
     onBlur = async (ev, type) => {
         this.setState({ msg: false });

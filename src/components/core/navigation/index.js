@@ -5,10 +5,10 @@ import { Link, useHistory } from 'react-router-dom';
 import { userService } from '../../../servives/userService'
 import logo from '../../../images/tuba3d-small.png';
 import styles from './index.module.css';
-import UserContext from '../../../Context';
+import Context from '../../../Context';
 
 const Navigation = () => {
-    const context = useContext(UserContext);
+    const context = useContext(Context);
     const history = useHistory();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');

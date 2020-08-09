@@ -1,12 +1,11 @@
 import React, { useContext } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import styles from './index.module.css';
 import PageLayout from '../../core/page-layout';
-import UserContext from '../../../Context';
+import Context from '../../../Context';
 
 const Banner = () => {
-    const context = useContext(UserContext);
-    const history = useHistory();
+    const context = useContext(Context);
     return (
         <PageLayout >
             <div className={styles.banner}>
