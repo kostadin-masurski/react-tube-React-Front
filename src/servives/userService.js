@@ -15,18 +15,20 @@ export const userService = {
 
     async login(user) {
         let loginFormData = new FormData();
-        loginFormData.append("username", user.username);
-        loginFormData.append("password", user.password);
+        if (user) {
+            loginFormData.append("username", user.username);
+            loginFormData.append("password", user.password);
+        }
 
         return await fetch('http://localhost:8080/api/login', {
             method: 'POST',
-            headers: {jwt: this.getCookie('x-auth-token')},
+            headers: { jwt: this.getCookie('x-auth-token') },
             body: loginFormData
         }).then(promise => {
             return this.handleResponse(promise);
         });
     },
-    
+
     async register(user) {
         let registerFormData = new FormData();
         registerFormData.append("username", user.username);

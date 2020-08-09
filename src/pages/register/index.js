@@ -73,9 +73,6 @@ class RegisterPage extends Component {
 
         const user = response;
         this.context.logIn(user);
-        //this.context.user = user;
-        console.log('the context is :');
-        console.log(this.context);
         this.props.history.push('/');
     }
 

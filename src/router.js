@@ -1,5 +1,6 @@
-import React from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import React, { useContext } from 'react';
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
+import UserContext from './Context';
 import Banner from './components/items/banner';
 import NotFound from './pages/not-found'
 import RegisterPage from './pages/register';
@@ -8,13 +9,15 @@ import EditPage from './pages/edit';
 
 
 const Router = () => {
+    const context = useContext(UserContext);
+
     return (
         <BrowserRouter>
             <Switch>
                 <Route exact path="/" component={Banner} />
-                <Route exact path="/register" component={RegisterPage} />
-                <Route exact path="/playlist/create" component={CreatePage} />
-                <Route exact path="/playlist/edit" component={EditPage} />
+                <Route exact path="/register">{context.user ? <Redirect to="/" /> : <RegisterPage /> }</Route>
+                <Route exact path="/playlist/create">{context.user ? <CreatePage /> : <Redirect to="/" /> }</Route>
+                <Route exact path="/playlist/edit">{context.user ? <EditPage /> : <Redirect to="/" /> }</Route>
                 {/* <Route path="/profile/:userid" component={Profile} /> */}
                 <Route component={NotFound} />
             </Switch>

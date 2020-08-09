@@ -21,15 +21,14 @@ const Navigation = () => {
             return;
         }
 
-        const response = await userService.login({username, password});
+        const response = await userService.login({ username, password });
         if (response.message) {
             setMsg(response.message);
             return;
         }
 
         setMsg(false);
-        const user = response;
-        context.logIn(user);
+        context.logIn(response);
         history.push('/');
     }
 
@@ -47,25 +46,28 @@ const Navigation = () => {
                 <img src={logo} alt="logo" />
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
-            <Navbar.Collapse id="basic-navbar-nav">
-                <Nav className="mr-auto">
-                    <Nav.Link href="/register"><h5 className={styles.navtext}>Register</h5></Nav.Link>
-                </Nav>
-                {msg ? <p className={styles.msg}>{msg}</p> : null}
-                {context.user ?
+            {context.user ?
+                <Navbar.Collapse id="basic-navbar-nav">
+                    <Nav className="mr-auto"></Nav>
                     <Form className={styles['nav-form']} onSubmit={handleLogOut} >
                         <Link className={styles['nav-link']} to="/"><h5 className={styles.navtext}>Welocome {context.user.username}</h5></Link>
                         <Link className={styles['nav-link']} to="/playlist/create"><h5 className={styles.navtext}>Create New Playlist</h5></Link>
                         <Button variant="outline-light" type="submit" >Logout</Button>
                     </Form>
+                </Navbar.Collapse>
                 :
+                <Navbar.Collapse id="basic-navbar-nav">
+                    <Nav className="mr-auto">
+                        <Link to="/register"><h5 className={styles.navtext}>Register</h5></Link>
+                    </Nav>
+                    {msg ? <p className={styles.msg}>{msg}</p> : null}
                     <Form className={styles['nav-form']} onSubmit={handleSubmit}>
                         <FormControl value={username} onChange={ev => setUsername(ev.target.value)} type="text" id="username" placeholder="Username" className="mr-sm-2" />
                         <FormControl value={password} onChange={ev => setPassword(ev.target.value)} type="password" id="password" placeholder="Password" className="mr-sm-2" />
                         <Button variant="outline-light" type="submit">Login</Button>
                     </Form>
-                }
-            </Navbar.Collapse>
+                </Navbar.Collapse>
+            }
         </Navbar>
     )
 }
