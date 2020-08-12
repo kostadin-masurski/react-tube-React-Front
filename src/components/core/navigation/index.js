@@ -41,7 +41,7 @@ const Navigation = () => {
     }
 
     return (
-        <Navbar bg="dark" variant="dark" expand="lg">
+        <Navbar className={styles.navbar} bg="dark" variant="dark" expand="lg">
             <Navbar.Brand href="/">
                 <img src={logo} alt="logo" />
             </Navbar.Brand>

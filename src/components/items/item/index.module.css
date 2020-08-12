@@ -15,3 +15,7 @@
   cursor: pointer;
   background-color: lightgrey;
 }
+
+.name {
+  font-size: calc(1.1vh + 0.6vw);
+}

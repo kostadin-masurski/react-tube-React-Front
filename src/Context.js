@@ -4,8 +4,13 @@ const Context = React.createContext({
   user: null,
   logIn: () => {},
   logOut: () => {},
-  selectedSong: null,
+  playlists: [],
+  selectedPlaylist: {},
+  selectPlaylist: () => {},
+  loadPlaylists: () => {},
   allSongs: [],
+  selectedPlaylistSongs: [],
+  selectedSong: null,
   selectSong: () => {},
   loadAllSongs: () => {}
 })

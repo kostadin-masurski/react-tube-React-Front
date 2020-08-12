@@ -11,26 +11,27 @@ const Songs = () => {
     const loadAllSongs = useCallback( async () => {
         const songs = await (await songService.loadAll()).json();
         context.loadAllSongs(songs);
+        context.selectPlaylist(false, songs);
     }, [context])
 
     const renderSongs = useMemo(() => {
-        return Object.values(context.allSongs).map((song, index) => {
+        return context.selectedPlaylistSongs.map((song, index) => {
             return (
                 <Item item={song} index={index} key={index} />
             )
         })
-    }, [context.allSongs])
+    }, [context])
 
     useEffect(() => {
         loadAllSongs();
-    }, [loadAllSongs])
+    }, [])
 
     const showAllSongs = () => {
-        console.log(context.selectedSong)
+        context.selectPlaylist(false, context.allSongs);
     }
 
     return (
-        <div className={styles.scroll} onClick={ev => context.selectSong(context.allSongs[ev.target.parentNode.id])}>
+        <div className={styles.scroll} onClick={ev => context.selectSong(context.allSongs[ev.target.id ? ev.target.id : ev.target.parentNode.id])}>
             <h1>Songs</h1>
             <Button onClick={ev => showAllSongs()} variant="dark">All songs</Button>
             {renderSongs}

@@ -1,6 +1,13 @@
+.player {
+    position: absolute;
+    top: 85px;
+    left: 35%;
+    z-index: 2;
+}
+
 .half-frame {
-    width: 50%;
-    height: 30vh;
+    width: 105vh;
+    height: 32vh;
     padding: 0.4%;
 }
 

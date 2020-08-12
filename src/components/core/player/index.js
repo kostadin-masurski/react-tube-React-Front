@@ -6,8 +6,8 @@ const Player = () => {
     const context = useContext(Context);
 
     return (
-        <div>
-            <h1 className={styles.title}>Artist -Song</h1>
+        <div className={styles.player}>
+            <h3 className={styles.title}>{context.selectedSong.artist} - {context.selectedSong.name}</h3>
             <iframe title="player"
                 className={styles["half-frame"]}
                 src={"https://www.youtube.com/embed/" + context.selectedSong.youtubeIdent + "?autoplay=1"}

@@ -1,45 +1,35 @@
-import React, { Component } from 'react';
+import React, { useContext, useEffect, useCallback, useMemo } from 'react';
 import { playlistService } from '../../../servives/playlistService'
 import styles from './index.module.css';
 import Item from '../item';
+import Context from '../../../Context';
 
-class Playlists extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            playlists: [],
-            selectPlaylistInces: 0
-        }
-    }
+const Playlists = () => {
+    const context = useContext(Context);
 
-    async loadAllPlaylists() {
+    const loadAllPlaylists = useCallback( async () => {
         const playlists = await (await playlistService.loadAll()).json();
-        this.setState({
-            playlists
-        })
-    }
+        context.loadPlaylists(playlists);
+    }, [context])
 
-    renderPlaylists() {
-        const { playlists } = this.state;
-        return playlists.map((playlist, index) => {
+    const renderPlaylists = useMemo(() => {
+        return context.playlists.map((playlist, index) => {
             return (
-                <Item item={playlist} key={index} />
+                <Item item={playlist} index={index} key={index} />
             )
         })
-    }
+    }, [context.playlists])
 
-    componentDidMount() {
-        this.loadAllPlaylists();
-    }
+    useEffect(() => {
+        loadAllPlaylists();
+    }, [])
 
-    render() {
-        return (
-            <div className={styles.scroll}>
-                <h1>Playlists</h1>
-                {this.renderPlaylists()}
-            </div>
-        )
-    }
+    return (
+        <div className={styles.scroll} onClick={ev => context.selectPlaylist(context.playlists[ev.target.id ? ev.target.id : ev.target.parentNode.id])}>
+            <h1>Playlists</h1>
+            {renderPlaylists}
+        </div>
+    )
 }
 
 export default Playlists;
