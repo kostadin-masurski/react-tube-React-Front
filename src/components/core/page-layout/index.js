@@ -10,6 +10,7 @@ import Context from '../../../Context';
 
 const PageLayout = (props) => {
   const context = useContext(Context);
+  const path = window.location.pathname;
 
   return (
     <div>
@@ -23,7 +24,7 @@ const PageLayout = (props) => {
             <Songs />
           </Col>
           <Col sm={8}>
-            <div className={context.selectedSong ? styles['layout-container'] : null}>
+            <div className={context.selectedSong && path !== '/' && path !== 'home' ? styles['layout-container'] : null}>
             {props.children}
             </div>
           </Col>

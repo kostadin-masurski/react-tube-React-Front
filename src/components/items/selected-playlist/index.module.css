@@ -1,0 +1,18 @@
+.container {
+    display: block;
+    margin-top: 25vh;
+}
+
+.block {
+    display: block;
+    margin-top: 1vh;
+}
+
+.playlist-img-big {
+    height: 60vh;
+}
+
+.playlist-img-small {
+    height: 15vh;
+    margin-right: 1vw;
+}

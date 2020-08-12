@@ -5,12 +5,19 @@
     z-index: 2;
 }
 
+.full-frame {
+    width: 64vw;
+    height: 62vh;
+    padding: 0.4%;
+}
+
 .half-frame {
-    width: 105vh;
+    width: 64vw;
     height: 32vh;
     padding: 0.4%;
 }
 
 .title {
     text-align: left;
+    color: crimson;
 }

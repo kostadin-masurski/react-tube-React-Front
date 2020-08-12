@@ -42,15 +42,15 @@ const Navigation = () => {
 
     return (
         <Navbar className={styles.navbar} bg="dark" variant="dark" expand="lg">
-            <Navbar.Brand href="/">
+            <Link to="/">
                 <img src={logo} alt="logo" />
-            </Navbar.Brand>
+            </Link>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             {context.user ?
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mr-auto"></Nav>
                     <Form className={styles['nav-form']} onSubmit={handleLogOut} >
-                        <Link className={styles['nav-link']} to="/"><h5 className={styles.navtext}>Welocome {context.user.username}</h5></Link>
+                        <Link className={styles['nav-link']} to="/home"><h5 className={styles.navtext}>Welocome {context.user.username}</h5></Link>
                         <Link className={styles['nav-link']} to="/playlist/create"><h5 className={styles.navtext}>Create New Playlist</h5></Link>
                         <Button variant="outline-light" type="submit" >Logout</Button>
                     </Form>
