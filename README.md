@@ -17,6 +17,8 @@ The Spring backend uses port 8080.
 ```
  - Simple UI
  - Watch the videos until editing the playlists 
+ - Stay logged-in until you log out
+ - JWT authentication
  - Button to add existing songs in a playlist
  - Simple form to add new songs witn full youtube url or only with the youtube id - the last 11 symbols of the youtube url 
  - Default playlist and song pictures if the user does not provide picture url 

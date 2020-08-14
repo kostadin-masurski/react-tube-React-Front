@@ -15,7 +15,7 @@ class AddSongPage extends Component {
         }
     }
 
-    onBlur = (ev, type) => {
+    onChange = (ev, type) => {
         const newState = {};
         newState[type] = ev.target.value;
         this.setState(newState);
@@ -30,25 +30,25 @@ class AddSongPage extends Component {
                     <Title title="Add new song" />
                     <Form.Group controlId="formBasicSong">
                         <Form.Label>Song</Form.Label>
-                        <Form.Control onBlur={(e) => this.onBlur(e, song)} type="text" autoFocus placeholder="Song name ..." />
+                        <Form.Control onChange={(e) => this.onChange(e, song)} type="text" autoFocus placeholder="Song name ..." />
                         <Form.Text className="text-danger">Song msg</Form.Text>
                     </Form.Group>
 
                     <Form.Group controlId="formBasicArtist">
                         <Form.Label>Artist</Form.Label>
-                        <Form.Control onBlur={(e) => this.onBlur(e, artist)} type="text" placeholder="Artist name ..." />
+                        <Form.Control onChange={(e) => this.onChange(e, artist)} type="text" placeholder="Artist name ..." />
                         <Form.Text className="text-danger">Artist msg</Form.Text>
                     </Form.Group>
 
                     <Form.Group controlId="formBasicYoutubeIdent">
                         <Form.Label>Youtube ID or URL</Form.Label>
-                        <Form.Control onBlur={(e) => this.onBlur(e, youtubeIdent)} type="text" placeholder="Youtube ID or URL ..." />
+                        <Form.Control onChange={(e) => this.onChange(e, youtubeIdent)} type="text" placeholder="Youtube ID or URL ..." />
                         <Form.Text className="text-danger">Youtube ID or URL msg</Form.Text>
                     </Form.Group>
 
                     <Form.Group controlId="formBasicImgUrl">
                         <Form.Label>Pictute URL</Form.Label>
-                        <Form.Control onBlur={(e) => this.onBlur(e, imgUrl)} type="text" placeholder="https:// ..." />
+                        <Form.Control onChange={(e) => this.onChange(e, imgUrl)} type="text" placeholder="https:// ..." />
                         <Form.Text className="text-danger">Pictute URL msg</Form.Text>
                     </Form.Group>
 

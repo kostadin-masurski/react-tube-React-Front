@@ -6,6 +6,7 @@ import styles from './index.module.css';
 import PageLayout from '../../components/core/page-layout';
 import Title from '../../components/core/title';
 import Context from '../../Context';
+import { withRouter } from 'react-router-dom';
 
 class RegisterPage extends Component {
     constructor(props) {
@@ -26,7 +27,7 @@ class RegisterPage extends Component {
 
     static contextType = Context;
 
-    onBlur = async (ev, type) => {
+    onChange = async (ev, type) => {
         this.setState({ msg: false });
         const newState = {};
         newState[type] = ev.target.value;
@@ -83,25 +84,25 @@ class RegisterPage extends Component {
                     <Title title="Register"/>
                     <Form.Group controlId="formBasicUsername">
                         <Form.Label>Usename</Form.Label>
-                        <Form.Control onBlur={(e) => this.onBlur(e, 'username')} type="text" placeholder="Enter Username" />
+                        <Form.Control onChange={(e) => this.onChange(e, 'username')} type="text" placeholder="Enter Username" />
                         {this.state.usernameMsg ? <Form.Text className="text-danger">{this.state.usernameMsg}</Form.Text> : null}
                     </Form.Group>
 
                     <Form.Group controlId="formBasicEmail">
                         <Form.Label>Email address</Form.Label>
-                        <Form.Control onBlur={(e) => this.onBlur(e, 'email')} type="email" placeholder="Enter email" />
+                        <Form.Control onChange={(e) => this.onChange(e, 'email')} type="email" placeholder="Enter email" />
                         {this.state.emailMsg ? <Form.Text className="text-danger">{this.state.emailMsg}</Form.Text> : null}
                     </Form.Group>
 
                     <Form.Group controlId="formBasicPassword">
                         <Form.Label>Password</Form.Label>
-                        <Form.Control onBlur={(e) => this.onBlur(e, 'password')} type="password" placeholder="Password" />
+                        <Form.Control onChange={(e) => this.onChange(e, 'password')} type="password" placeholder="Password" />
                         {this.state.passwordMsg ? <Form.Text className="text-danger">{this.state.passwordMsg}</Form.Text> : null}
                     </Form.Group>
 
                     <Form.Group controlId="formBasicConfirmPassword">
                         <Form.Label>Confirm Password</Form.Label>
-                        <Form.Control onBlur={(e) => this.onBlur(e, 'confirmPassword')} type="password" placeholder="Confirm Password" />
+                        <Form.Control onChange={(e) => this.onChange(e, 'confirmPassword')} type="password" placeholder="Confirm Password" />
                         {this.state.confirmPasswordMsg ? <Form.Text className="text-danger">{this.state.confirmPasswordMsg}</Form.Text> : null}
                     </Form.Group>
 
@@ -113,4 +114,4 @@ class RegisterPage extends Component {
     }
 }
 
-export default RegisterPage;
+export default withRouter(RegisterPage);

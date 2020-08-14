@@ -17,7 +17,7 @@ class EditPage extends Component {
         }
     }
 
-    onBlur = (ev, type) => {
+    onChange = (ev, type) => {
         const newState = {};
         newState[type] = ev.target.value;
         this.setState(newState);
@@ -44,13 +44,13 @@ class EditPage extends Component {
                     <Title title="Edit your playlist"/>
                     <Form.Group controlId="formBasicPlaylist">
                         <Form.Label>Usename</Form.Label>
-                        <Form.Control onBlur={(e) => this.onBlur(e, playlist)} type="imgUrl" placeholder="My playlist is ..." />
+                        <Form.Control onChange={(e) => this.onChange(e, playlist)} type="imgUrl" placeholder="My playlist is ..." />
                         <Form.Text className="text-danger">Playlist msg</Form.Text>
                     </Form.Group>
 
                     <Form.Group controlId="formBasicImgUrl">
                         <Form.Label>Image URL</Form.Label>
-                        <Form.Control onBlur={(e) => this.onBlur(e, imgUrl)} type="imgUrl" placeholder="https://..." />
+                        <Form.Control onChange={(e) => this.onChange(e, imgUrl)} type="imgUrl" placeholder="https://..." />
                         <Form.Text className="text-danger">ImgUrl msg</Form.Text>
                     </Form.Group>
 
