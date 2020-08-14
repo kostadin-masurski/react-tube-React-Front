@@ -53,7 +53,7 @@ class CreatePage extends Component {
             return;
         }
 
-        this.props.history.push('/home');
+        this.props.history.push('/playlist/edit');
     }
 
     render() {

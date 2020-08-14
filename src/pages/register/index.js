@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Form, Button } from 'react-bootstrap';
 import { userService } from '../../servives/userService'
@@ -6,7 +7,6 @@ import styles from './index.module.css';
 import PageLayout from '../../components/core/page-layout';
 import Title from '../../components/core/title';
 import Context from '../../Context';
-import { withRouter } from 'react-router-dom';
 
 class RegisterPage extends Component {
     constructor(props) {
