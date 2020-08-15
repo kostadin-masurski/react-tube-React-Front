@@ -19,7 +19,7 @@ const Router = () => {
                 <Route exact path="/home">{context.user ? <HomePage /> : <Redirect to="/" /> }</Route>
                 <Route exact path="/register">{context.user ? <Redirect to="/" /> : <RegisterPage /> }</Route>
                 <Route exact path="/playlist/create">{context.user ? <CreatePage /> : <Redirect to="/" /> }</Route>
-                <Route exact path="/playlist/edit">{context.user ? <EditPage /> : <Redirect to="/" /> }</Route>
+                <Route exact path="/playlist/edit">{context.user && context.selectedPlaylist ? <EditPage /> : <Redirect to="/" /> }</Route>
                 <Route component={NotFound} />
             </Switch>
         </BrowserRouter>

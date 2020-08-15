@@ -14,10 +14,11 @@ class EditPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            editedPlaylist: {},
             name: 'My playlist is ...',
             imgUrl: 'https:// ...',
             nameMsg: '',
-            imgUrlMsg: '',
+            imgUrlMsg: false,
             showForm: false,
             newSongButtonText: "Add New Song",
             msg: false,
@@ -27,10 +28,11 @@ class EditPage extends Component {
 
     static contextType = Context;
 
-    componentDidMount() {
+    componentWillMount() {
         this.setState({
-            name: this.context.selectedPlaylist ? this.context.selectedPlaylist.name: 'My playlist is ...',
-            imgUrl: this.context.selectedPlaylist ? this.context.selectedPlaylist.imgUrl: 'https:// ...'
+            editedPlaylist: this.context.selectedPlaylist,
+            name: this.context.selectedPlaylist.name,
+            imgUrl: this.context.selectedPlaylist.imgUrl
         })
     }
 
@@ -55,28 +57,45 @@ class EditPage extends Component {
         }
     }
 
-    handleSubmit = async (ev) => {
-        ev.preventDefault();
-
-        this.context.selectedPlaylist.name = this.state.name;
-        this.context.selectedPlaylist.imgUrl = this.state.imgUrl;
-
-        const response = await playlistService.edit(this.context.selectedPlaylist);
+    edit = async (playlist) => {
+        const response = await playlistService.edit(playlist);
         if (response.message) {
             this.setState({ msg: response.message });
             return;
-        }
-        
+        }        
         this.context.loadPlaylists(await playlistService.loadAll());
+        this.context.selectPlaylist(playlist, false);
+    }
+
+    handleSubmit = async (ev) => {
+        ev.preventDefault();
+        let updatedPlaylist = this.state.editedPlaylist;
+        updatedPlaylist.name = this.state.name;
+        updatedPlaylist.imgUrl = this.state.imgUrl;
+        this.edit(updatedPlaylist);
+    }
+
+    add = async () => {
+        let updatedPlaylist = this.state.editedPlaylist;
+        updatedPlaylist.songs.push(this.context.selectedSong);
+        this.edit(updatedPlaylist);
+    }
+
+    remove = async () => {
+        let updatedPlaylist = this.state.editedPlaylist;
+        updatedPlaylist.songs = updatedPlaylist.songs
+        .filter(s => s.youtubeIdent !== this.context.selectedSong.youtubeIdent);
+        this.edit(updatedPlaylist);
     }
 
     render() {
+        const addSong = this.context.selectedSong && this.state.editedPlaylist.songs.filter(s => s.youtubeIdent === this.context.selectedSong.youtubeIdent) < 1 ? true : false;
         return (
             <PageLayout>
                 <Form className={styles["form-container"]} onSubmit={this.handleSubmit}>
                     <Title title="Edit your playlist"/>
                     <Form.Group controlId="formBasicPlaylist">
-                        <Form.Label>Playlist</Form.Label>
+                        <Form.Label>Playlist {addSong} </Form.Label>
                         <Form.Control onChange={(e) => this.onChange(e, 'name')} type="text" value={this.state.name} />
                         {this.state.nameMsg ? <Form.Text className="text-danger">{this.state.nameMsg}</Form.Text> : null}
                     </Form.Group>
@@ -93,8 +112,11 @@ class EditPage extends Component {
 
                 <hr />
                 <Button variant="success" type="button" onClick={this.toggleAddForm} >{this.state.newSongButtonText}</Button>
-                <Button variant="danger" type="button">Remove: Artist - Song</Button>
-                {this.state.showForm ? <AddSong toggleAddForm={this.toggleAddForm} /> : null}
+                {this.context.selectedSong ? 
+                <Button type="button" variant={addSong ? 'success' : 'danger'} onClick={addSong ? this.add : this.remove} >
+                    {addSong ? 'Add' : 'Remove'} : {this.context.selectedSong.artist} - {this.context.selectedSong.name}
+                </Button> : null }
+                {this.state.showForm ? <AddSong editedPlaylist={this.state.editedPlaylist} toggleAddForm={this.toggleAddForm} /> : null}
                 <hr />
             </PageLayout>
         );

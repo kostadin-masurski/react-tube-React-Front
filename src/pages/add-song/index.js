@@ -27,6 +27,7 @@ class AddSongPage extends Component {
 
     static contextType = Context;
     toggleAddForm = this.props.toggleAddForm;
+    editedPlaylist = this.props.editedPlaylist;
 
     onChange = async (ev, type) => {
         await this.setState(validate(ev.target.value, type));
@@ -51,9 +52,9 @@ class AddSongPage extends Component {
 
         const newSong = await songService.getSong(this.state.youtubeIdent)
         this.context.selectSong(newSong);
-        this.context.selectedPlaylist.songs.push(newSong);
+        this.editedPlaylist.songs.push(newSong);
 
-        response = await playlistService.edit(this.context.selectedPlaylist);
+        response = await playlistService.edit(this.editedPlaylist);
         if (response.message) {
             this.setState({ msg: response.message });
             return;
