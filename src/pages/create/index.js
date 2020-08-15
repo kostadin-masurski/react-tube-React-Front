@@ -3,9 +3,11 @@ import { withRouter } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Form, Button } from 'react-bootstrap';
 import { playlistService } from '../../servives/playlistService';
+import { validate } from '../../servives/validationService';
 import styles from './index.module.css';
 import PageLayout from '../../components/core/page-layout';
 import Title from '../../components/core/title';
+import Context from '../../Context';
 
 class CreatePage extends Component {
     constructor(props) {
@@ -15,30 +17,17 @@ class CreatePage extends Component {
             imgUrl: "",
             msg: false,
             playlistMsg: "",
-            imgUrlMsg: "",
+            imgUrlMsg: false,
             disableSubmit: true
         }
     }
 
+    static contextType = Context;
+
     onChange = async (ev, type) => {
-        const newState = {};
-        newState[type] = ev.target.value;
-        this.setState(newState);
-        await this.setState(newState);
-        this.validateInput();
-    }
+        await this.setState(validate(ev.target.value, type));
 
-    validateInput() {
-        this.setState({ disableSubmit: true, playlistMsg: false, imgUrlMsg: false});
-
-        if (this.state.playlist.length < 3) {
-            this.setState({ playlistMsg: 'Playlist name should be more than 3 symbols long'});
-        }
-
-        if (!/(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi.test(this.state.imgUrl)) {
-            this.setState({ imgUrlMsg: 'Image URL is not valid'});
-        }
-
+        this.setState({ disableSubmit: true});
         if (this.state.playlistMsg === false && this.state.imgUrlMsg === false) {
             this.setState({ disableSubmit: false});
         }
@@ -53,6 +42,8 @@ class CreatePage extends Component {
             return;
         }
 
+        await this.context.loadPlaylists(await playlistService.loadAll());
+        this.context.selectPlaylist(this.context.playlists[this.context.playlists.length - 1]);
         this.props.history.push('/playlist/edit');
     }
 

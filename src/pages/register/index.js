@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Form, Button } from 'react-bootstrap';
-import { userService } from '../../servives/userService'
+import { userService } from '../../servives/userService';
+import { validate } from '../../servives/validationService';
 import styles from './index.module.css';
 import PageLayout from '../../components/core/page-layout';
 import Title from '../../components/core/title';
@@ -16,11 +17,11 @@ class RegisterPage extends Component {
             email: "",
             password: "",
             confirmPassword: "",
-            msg: false,
-            usernameMsg: false,
-            emailMsg: false,
-            passwordMsg: false,
-            confirmPasswordMsg: false,
+            msg: '',
+            usernameMsg: '',
+            emailMsg: '',
+            passwordMsg: '',
+            confirmPasswordMsg: '',
             disableSubmit: true
         }
     }
@@ -28,36 +29,15 @@ class RegisterPage extends Component {
     static contextType = Context;
 
     onChange = async (ev, type) => {
-        this.setState({ msg: false });
-        const newState = {};
-        newState[type] = ev.target.value;
-        await this.setState(newState);
-        this.validateInput();
-    }
-
-    validateInput() {
-        this.setState({ disableSubmit: true, usernameMsg: false, emailMsg: false, passwordMsg: false, confirmPasswordMsg: false});
-
-        if (/[!#$%^&*()+=[\]{};':"\\|,<>/?]/.test(this.state.username)) {
-            this.setState({ usernameMsg: 'Username should contain only alphanumeric symbols, @ or _'});
-        }
-
-        if (this.state.username.length < 3) {
-            this.setState({ usernameMsg: 'Username should be more than 3 symbols long'});
-        }
-
-        if (!/^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i.test(this.state.email)) {
-            this.setState({ emailMsg: 'Email is not valid'});
-        }
-
-        if (this.state.password.length < 6) {
-            this.setState({ passwordMsg: 'Password should be more than 5 symbols long'});
-        }
+        await this.setState(validate(ev.target.value, type));
 
         if (this.state.password !== this.state.confirmPassword) {
             this.setState({ confirmPasswordMsg: 'Passwords not matching'});
+        } else {
+            this.setState({ confirmPasswordMsg: false});
         }
 
+        this.setState({ disableSubmit: true});
         if (this.state.usernameMsg === false && this.state.emailMsg === false && this.state.passwordMsg === false && this.state.confirmPasswordMsg === false) {
             this.setState({ disableSubmit: false});
         }
@@ -87,25 +67,21 @@ class RegisterPage extends Component {
                         <Form.Control onChange={(e) => this.onChange(e, 'username')} type="text" placeholder="Enter Username" />
                         {this.state.usernameMsg ? <Form.Text className="text-danger">{this.state.usernameMsg}</Form.Text> : null}
                     </Form.Group>
-
                     <Form.Group controlId="formBasicEmail">
                         <Form.Label>Email address</Form.Label>
                         <Form.Control onChange={(e) => this.onChange(e, 'email')} type="email" placeholder="Enter email" />
                         {this.state.emailMsg ? <Form.Text className="text-danger">{this.state.emailMsg}</Form.Text> : null}
                     </Form.Group>
-
                     <Form.Group controlId="formBasicPassword">
                         <Form.Label>Password</Form.Label>
                         <Form.Control onChange={(e) => this.onChange(e, 'password')} type="password" placeholder="Password" />
                         {this.state.passwordMsg ? <Form.Text className="text-danger">{this.state.passwordMsg}</Form.Text> : null}
                     </Form.Group>
-
                     <Form.Group controlId="formBasicConfirmPassword">
                         <Form.Label>Confirm Password</Form.Label>
                         <Form.Control onChange={(e) => this.onChange(e, 'confirmPassword')} type="password" placeholder="Confirm Password" />
                         {this.state.confirmPasswordMsg ? <Form.Text className="text-danger">{this.state.confirmPasswordMsg}</Form.Text> : null}
                     </Form.Group>
-
                     {this.state.msg ? <p className={styles.msg}>{this.state.msg}</p> : null}
                     <Button variant="success" type="submit" disabled={this.state.disableSubmit}>Register</Button>
                 </Form>

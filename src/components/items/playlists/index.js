@@ -8,7 +8,7 @@ const Playlists = () => {
     const context = useContext(Context);
 
     const loadAllPlaylists = useCallback( async () => {
-        const playlists = await (await playlistService.loadAll()).json();
+        const playlists = await playlistService.loadAll();
         context.loadPlaylists(playlists);
     }, [context])
 

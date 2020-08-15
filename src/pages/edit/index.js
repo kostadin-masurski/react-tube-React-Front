@@ -33,9 +33,10 @@ class EditPage extends Component {
         })
     }
 
-    onChange = (ev, type) => {
-        this.setState(validate(ev.target.value, type));
-
+    onChange = async (ev, type) => {
+        await this.setState(validate(ev.target.value, type));
+        
+        this.setState({ disableSubmit: true});
         if (this.state.playlistMsg === false && this.state.imgUrlMsg === false) {
             this.setState({ disableSubmit: false});
         }
@@ -55,6 +56,7 @@ class EditPage extends Component {
 
     handleSubmit = async (ev) => {
         ev.preventDefault();
+
         this.context.selectedPlaylist.name = this.state.playlist;
         this.context.selectedPlaylist.imgUrl = this.state.imgUrl;
 
@@ -63,6 +65,8 @@ class EditPage extends Component {
             this.setState({ msg: response.message });
             return;
         }
+        
+        this.context.loadPlaylists(await playlistService.loadAll());
     }
 
     render() {
