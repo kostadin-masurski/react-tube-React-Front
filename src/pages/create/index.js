@@ -13,7 +13,7 @@ class CreatePage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            playlist: "",
+            name: "",
             imgUrl: "",
             msg: false,
             playlistMsg: "",
@@ -28,7 +28,7 @@ class CreatePage extends Component {
         await this.setState(validate(ev.target.value, type));
 
         this.setState({ disableSubmit: true});
-        if (this.state.playlistMsg === false && this.state.imgUrlMsg === false) {
+        if (this.state.nameMsg === false && this.state.imgUrlMsg === false) {
             this.setState({ disableSubmit: false});
         }
     }
@@ -36,7 +36,7 @@ class CreatePage extends Component {
     handleSubmit = async (ev) => {
         ev.preventDefault();
 
-        const response = await playlistService.create({name: this.state.playlist, imgUrl: this.state.imgUrl});
+        const response = await playlistService.create({name: this.state.name, imgUrl: this.state.imgUrl});
         if (response.message) {
             this.setState({ msg: response.message });
             return;
@@ -54,8 +54,8 @@ class CreatePage extends Component {
                     <Title title="Create your playlist"/>
                     <Form.Group controlId="formBasicPlaylist">
                         <Form.Label>Playlist</Form.Label>
-                        <Form.Control onChange={(e) => this.onChange(e, 'playlist')} type="imgUrl" placeholder="My playlist is ..." />
-                        {this.state.playlistMsg ? <Form.Text className="text-danger">{this.state.playlistMsg}</Form.Text> : null}
+                        <Form.Control onChange={(e) => this.onChange(e, 'name')} type="imgUrl" placeholder="My playlist is ..." />
+                        {this.state.nameMsg ? <Form.Text className="text-danger">{this.state.nameMsg}</Form.Text> : null}
                     </Form.Group>
 
                     <Form.Group controlId="formBasicImgUrl">

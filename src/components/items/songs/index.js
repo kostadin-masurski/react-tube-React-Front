@@ -33,7 +33,7 @@ const Songs = () => {
     }
 
     return (
-        <div className={styles.scroll} onClick={ev => context.selectSong(ev.target)}>
+        <div className={styles.scroll} onClick={ev => context.selectSong(context.selectedPlaylistSongs[ev.target.id ? ev.target.id : ev.target.parentNode.id])}>
             <h1>Songs</h1>
             <Button onClick={ev => showAllSongs()} variant="dark">All songs</Button>
             {renderSongs}

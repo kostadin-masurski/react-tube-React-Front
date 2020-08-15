@@ -14,12 +14,13 @@ class EditPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            playlist: 'My playlist is ...',
+            name: 'My playlist is ...',
             imgUrl: 'https:// ...',
-            playlistMsg: false,
-            imgUrlMsg: false,
+            nameMsg: '',
+            imgUrlMsg: '',
             showForm: false,
             newSongButtonText: "Add New Song",
+            msg: false,
             disableSubmit: true
         }
     }
@@ -28,7 +29,7 @@ class EditPage extends Component {
 
     componentDidMount() {
         this.setState({
-            playlist: this.context.selectedPlaylist ? this.context.selectedPlaylist.name: 'My playlist is ...',
+            name: this.context.selectedPlaylist ? this.context.selectedPlaylist.name: 'My playlist is ...',
             imgUrl: this.context.selectedPlaylist ? this.context.selectedPlaylist.imgUrl: 'https:// ...'
         })
     }
@@ -37,7 +38,7 @@ class EditPage extends Component {
         await this.setState(validate(ev.target.value, type));
         
         this.setState({ disableSubmit: true});
-        if (this.state.playlistMsg === false && this.state.imgUrlMsg === false) {
+        if (this.state.nameMsg === false && this.state.imgUrlMsg === false) {
             this.setState({ disableSubmit: false});
         }
     }
@@ -57,7 +58,7 @@ class EditPage extends Component {
     handleSubmit = async (ev) => {
         ev.preventDefault();
 
-        this.context.selectedPlaylist.name = this.state.playlist;
+        this.context.selectedPlaylist.name = this.state.name;
         this.context.selectedPlaylist.imgUrl = this.state.imgUrl;
 
         const response = await playlistService.edit(this.context.selectedPlaylist);
@@ -75,9 +76,9 @@ class EditPage extends Component {
                 <Form className={styles["form-container"]} onSubmit={this.handleSubmit}>
                     <Title title="Edit your playlist"/>
                     <Form.Group controlId="formBasicPlaylist">
-                        <Form.Label>Usename</Form.Label>
-                        <Form.Control onChange={(e) => this.onChange(e, 'playlist')} type="text" value={this.state.playlist} />
-                        {this.state.playlistMsg ? <Form.Text className="text-danger">{this.state.playlistMsg}</Form.Text> : null}
+                        <Form.Label>Playlist</Form.Label>
+                        <Form.Control onChange={(e) => this.onChange(e, 'name')} type="text" value={this.state.name} />
+                        {this.state.nameMsg ? <Form.Text className="text-danger">{this.state.nameMsg}</Form.Text> : null}
                     </Form.Group>
 
                     <Form.Group controlId="formBasicImgUrl">
@@ -86,13 +87,14 @@ class EditPage extends Component {
                         {this.state.imgUrlMsg ? <Form.Text className="text-danger">{this.state.imgUrlMsg}</Form.Text> : null}
                     </Form.Group>
 
+                    {this.state.msg ? <p className={styles.msg}>{this.state.msg}</p> : null}
                     <Button variant="success" type="submit" disabled={this.state.disableSubmit}>Edit</Button>
                 </Form>
-                
+
                 <hr />
                 <Button variant="success" type="button" onClick={this.toggleAddForm} >{this.state.newSongButtonText}</Button>
                 <Button variant="danger" type="button">Remove: Artist - Song</Button>
-                {this.state.showForm ? <AddSong /> : null}
+                {this.state.showForm ? <AddSong toggleAddForm={this.toggleAddForm} /> : null}
                 <hr />
             </PageLayout>
         );

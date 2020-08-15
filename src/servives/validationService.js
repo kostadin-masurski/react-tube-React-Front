@@ -1,7 +1,7 @@
 const validators = {
     username: (username) => {
         const regex = /[!#$%^&*()+=[\]{};':"\\|,<>/?]/;
-        const msg = !regex.test(username) && username.length > 2 ? false : 'Username should be more than 2 symbols long and should contain only alphanumeric symbols, @ or _';
+        const msg = !regex.test(username) && username.length > 2 && username.length <= 30 ? false : 'Username should be between 3 and 30 symbols long and should contain only alphanumeric symbols, @ or _';
         return {username: username, usernameMsg: msg};
     },
 
@@ -21,9 +21,22 @@ const validators = {
         return {confirmPassword: confirmPassword, confirmPasswordMsg: msg};
     },
 
-    playlist: (playlist) => {
-        const msg = playlist.length > 2 ? false : 'Playlist name should be more than 2 symbols long';
-        return {playlist: playlist, playlistMsg: msg};
+    name: (name) => {
+        const regex = /[#%^*()+=[\]{};':"\\|,<>/?]/;
+        const msg = !regex.test(name) && name.length > 2 && name.length <= 50 ? false : 'Name should be between 3 and 50 symbols long and should contain only alphanumeric symbols, @, $, &, ! or _';
+        return {name: name, nameMsg: msg};
+    },
+
+    artist: (artist) => {
+        const regex = /[#%^*()+=[\]{};':"\\|,<>/?]/;
+        const msg = !regex.test(artist) && artist.length > 2 && artist.length <= 50 ? false : 'Artist name should be between 3 and 50 symbols long and should contain only alphanumeric symbols, @, $, &, ! or _';
+        return {artist: artist, artistMsg: msg};
+    },
+
+    youtubeIdent: (url) => {
+        const regex = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi;
+        const msg = url.length === 11 || regex.test(url) ? false : 'Youtube ID is not 11 symbols long or URL is not valid';
+        return {youtubeIdent: url, youtubeIdentMsg: msg};
     },
 
     imgUrl: (url) => {

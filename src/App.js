@@ -43,8 +43,8 @@ function App(props) {
     setPlaylists(playlists)
   }
 
-  const selectSong = (target) => {
-    const song = selectedPlaylistSongs[target.id ? target.id : target.parentNode.id];
+  const selectSong = (song) => {
+    //const song = selectedPlaylistSongs[target.id ? target.id : target.parentNode.id];
     if (song) { setSelectedSong({ ...song }); }
   }
 
